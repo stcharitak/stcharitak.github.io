@@ -52,11 +52,11 @@ export default function Header() {
 
             <li className="menu-item">
               {pathname === "/" ? (
-                <HashLink to="/#contact" smooth>
+                <HashLink to="#contact" smooth>
                   Contact
                 </HashLink>
               ) : (
-                <HashLink to="/resume/#contact" smooth>
+                <HashLink to="/resume#contact" smooth>
                   Contact
                 </HashLink>
               )}
