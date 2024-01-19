@@ -85,33 +85,42 @@
   // Contact form validator
   $(function () {
     $("#contact_form").validator();
+    var form = document.getElementById("contact_form");
 
     $("#contact_form").on("submit", function (e) {
-      if (!e.isDefaultPrevented()) {
-        var url = "https://formspree.io/f/mayrnzdj";
-        var alertBox =
-          '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>The email has been sent!</div>';
-        $.ajax({
-          type: "POST",
-          url: url,
-          data: $(this).serialize(),
-          success: function (data) {
-            var messageAlert = "alert-" + data.type;
-            var messageText = data.message;
-            if (messageAlert && messageText) {
-              $("#contact_form").find(".messages").html(alertBox);
-              $("#contact_form")[0].reset();
-            }
-          },
-          error: function () {
-            // Fail message
+      e.preventDefault();
+      var data = new FormData(e.target);
+      var alertBox =
+        '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>The message has been sent!</div>';
+      fetch(e.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
             $("#contact_form").find(".messages").html(alertBox);
-            //clear all fields
-            $("#contact_form")[0].reset();
-          },
+            form.reset();
+          } else {
+            response.json().then((data) => {
+              if (Object.hasOwn(data, "errors")) {
+                alertBox =
+                  '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Sorry there was a problem</div>';
+              }
+              $("#contact_form").find(".messages").html(alertBox);
+              //clear all fields
+              form.reset();
+            });
+          }
+        })
+        .catch((error) => {
+          alertBox =
+            '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Sorry there was a problem</div>';
+          $("#contact_form").find(".messages").html(alertBox);
+          console.log(error);
         });
-        return false;
-      }
     });
   });
   // /Contact form validator
