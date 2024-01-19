@@ -89,6 +89,8 @@
     $("#contact_form").on("submit", function (e) {
       if (!e.isDefaultPrevented()) {
         var url = "https://formspree.io/f/mayrnzdj";
+        var alertBox =
+          '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>The email has been sent!</div>';
         $.ajax({
           type: "POST",
           url: url,
@@ -96,17 +98,16 @@
           success: function (data) {
             var messageAlert = "alert-" + data.type;
             var messageText = data.message;
-
-            var alertBox =
-              '<div class="alert ' +
-              messageAlert +
-              ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-              messageText +
-              "</div>";
             if (messageAlert && messageText) {
               $("#contact_form").find(".messages").html(alertBox);
               $("#contact_form")[0].reset();
             }
+          },
+          error: function () {
+            // Fail message
+            $("#contact_form").find(".messages").html(alertBox);
+            //clear all fields
+            $("#contact_form")[0].reset();
           },
         });
         return false;
