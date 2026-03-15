@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    {{HEAD}}
+  </head>
+
+  <body class="page" data-page="{{PAGE_KEY}}">
+    <div class="lm-animated-bg"></div>
+
+    <div class="preloader">
+      <div class="preloader-animation">
+        <div class="preloader-spinner"></div>
+      </div>
+    </div>
+
+    <div class="lmpixels-scroll-to-top"><i class="lnr lnr-chevron-up"></i></div>
+
+    <div class="page-scroll">
+      <div
+        id="page_container"
+        class="page-container bg-move-effect"
+        data-animation="transition-flip-in-right"
+      >
+        <div id="layout-header"></div>
+{{CONTENT}}
+        <div id="layout-footer"></div>
+      </div>
+    </div>
+
+    {{SCRIPTS}}
+  </body>
+</html>
